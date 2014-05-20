@@ -34,50 +34,48 @@ class Simulation
     # Voter.voters_created.map {|voter| ["hello"], ["goodbye"] }
   end
 
-  #testing 
+  #working 
   def update
   	puts
-  	name = ""
-
-    list_as_string = list.join("\n")
+  	#weird name so it doesn't match any name in voter list  
+  	name = "*%$***"
+    #convert to string for search purposes 
+    voter_list_as_string = list.join("\n")
   	
-
-  	until list_as_string =~ /name/
+  	#compare user input against existing list of voters
+  	until voter_list_as_string.include? name
       puts "Name?" 
-      name = gets.chomp 
- 		  prompt
+      prompt
+      name = gets.chomp  
  		end 
-
+    #get new name 
+ 		puts
  		puts "New name?"
  		prompt	
- 		new_name = gets.chomp 
-
-    #conditional 
-    #need to search the array of objects 
-    #to see if the object with the name new_name 
-    #is a voter or politician 
-
-    #if a voter update in one way 
-    #if a politician update in a different way 
-
+ 		new_name = gets.chomp  
+    
+    #find index at which given voter name occurs, so we access that voter object below 
     index = Voter.voters_created.find_index {|instance| instance.name == name } 
   
- 		if Voter.voters_created[index].is_a? Voter
+  	#find out whether voter is just a voter or a politician as well
+ 		if ((Voter.voters_created[index].is_a? Voter) && !(Voter.voters_created[index].is_a? Politician))
  			puts
  			puts "New Politics?"
  			prompt
  			new_politics = gets.chomp 
+ 			#reset voters politics 
  			Voter.voters_created[index].politics = new_politics
  		elsif Voter.voters_created[index].is_a? Politician
  			puts
  			puts "New Party?"
  			prompt
+ 			new_party = gets.chomp 
+ 			#rest politicians party 
  			Voter.voters_created[index].party = new_party
  		end
 
-    #save this step for last 
+    #reset voter/politicians name 
  		Voter.voters_created[index].name = new_name
- 		
   
   end
 
@@ -111,6 +109,15 @@ class Simulation
 			end 
     end 
   end
+
+  
+
+  def choose 
+  	#if politician is a Republican 
+
+
+
+  end 
 
 
   def vote 

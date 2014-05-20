@@ -56,15 +56,13 @@ module SimulatorTests
     puts
 		# puts "Now as an array of objects"
 		# p Voter.voters_created
-		
+		my_simulation.update
 		puts
-      my_simulation.update
-		puts
-		my_simulation.list
+		puts my_simulation.list
 		puts
 		my_simulation.update
 		puts
-		my_simulation.list
+		puts my_simulation.list
 
 
 	end

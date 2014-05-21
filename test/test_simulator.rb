@@ -87,7 +87,38 @@ module SimulatorTests
 		Politician.new("Joe Garcia", "Republican")
 		Politician.new("Elaine Kagan", "Democrat")
   	Politician.new("Mike Koch", "Republican")
-    my_simulation.vote 
+    my_simulation.send(:vote)
+
+
+	end 
+
+	def test_main_menu
+		my_simulation = Simulation.new
+		my_simulation.main_menu
+
+	end 
+
+def test_stump
+
+		Voter.new("Joe Smith", "Liberal")
+		Voter.new("Mike Suarez", "Conservative")
+		Voter.new("Lorenzo Gamio", "Socialist")
+		Voter.new("Mike Jones", "Tea Party")
+		Voter.new("Don Draper", "Neutral")
+		Voter.new("Peggy Olson", "Liberal")
+		Voter.new("Roger Sterling", "Conservative")
+		Voter.new("Joan Harris", "Socialist")
+		Voter.new("Pete Campbell", "Tea Party")
+		Voter.new("Betty Draper", "Neutral")
+		Voter.new("Ken Cosgrove", "Liberal")
+		Voter.new("Burt Cooper", "Conservative")
+		Voter.new("Harry Crane", "Socialist")
+		Voter.new("Bob Benson", "Tea Party")
+		Voter.new("Megan Draper", "Neutral")
+		Politician.new("Joe Garcia", "Republican")
+		Politician.new("Elaine Kagan", "Democrat")
+  	Politician.new("Mike Koch", "Republican")
+
 
 
 	end 

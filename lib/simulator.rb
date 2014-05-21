@@ -30,8 +30,6 @@ class Simulation
   	#and replace each full object listing with the object's name 
   	#and party if a politcian or politics if a voter 
     Voter.voters_created.map {|voter| "#{voter.name}, #{voter.class == Politician ? voter.party : voter.politics}"} 
-    # Voter.voters_created.map {|voter| Array.new(2,"#{voter.name}","#{voter.class == Politician ? voter.party : voter.politics}")} 
-    # Voter.voters_created.map {|voter| ["hello"], ["goodbye"] }
   end
 
   #working 
@@ -112,14 +110,12 @@ class Simulation
 
   
 
-  def choose 
-  	#if politician is a Republican 
-
-
-
-  end 
-
-
+  
+ 
+  #working 
+  #this method works currently, but I'd like to modify it so that 
+  #a voter can only vote once, but waits to meet all candidates before voting 
+  
   def vote 
   	#need to separate politcians from voters
   	#the politcian's visiting of a voter is independent 
@@ -164,8 +160,10 @@ class Simulation
       campaigner = person[0]
       campaignee = person[1]
 
-      if (campaigner.is_a? Politician) && ((campaignee.is_a? Voter) && (campaignee.voted == false) && !(campaignee.is_a? Politician))
-      	
+      if (campaigner.is_a? Politician) && ((campaignee.is_a? Voter)  && !(campaignee.is_a? Politician))
+        #&& (campaignee.voted == false) removed from conditional above
+        #only allows a voter to vote once, but before meeting all candidates
+
       	puts <<-STUMPSPEECH
         Howdy there constituent #{campaignee.name}!
         You are #{campaignee.politics}.
@@ -173,48 +171,64 @@ class Simulation
         Can I count on your vote?
 
       	STUMPSPEECH
-      	#nested conditional
-      	if (campaigner.party == "Democrat") && (campaignee.politics == "Progressive" || campaignee.politics == "Liberal" )
-      		vote_count[campaigner.name] += 1
-      		campaignee.voted = true
-      	elsif (campaigner.party == "Republican") && (campaignee.politics == "Conservative" || campaignee.politics == "Nativist" )
-      		vote_count[campaigner.name] += 1
-      		campaignee.voted = true
-      	end 
-
-      elsif (campaigner.is_a? Politician) && (campaignee.is_a? Politician)
-      		if campaigner == campaignee
+      	
+      	if campaignee.cast_vote(campaigner)
       			vote_count[campaigner.name] += 1
       			campaignee.voted = true
-      		elsif ((campaigner != campaignee) && (campaigner.party == campaignee.party))
+      	end
+
+      	p vote_count
+      end
+    end 
+
+
+        #if some_method == true 
+
+      	# if (campaigner.party == "Democrat") #&& (campaignee.politics == "Progressive" || campaignee.politics == "Liberal" )
+      	# 	if campaignee.cast_vote(campaigner)
+      	# 		vote_count[campaigner.name] += 1
+      	# 		campaignee.voted = true
+      	# 	end
+      	# elsif (campaigner.party == "Republican") #&& (campaignee.politics == "Conservative" || campaignee.politics == "Nativist" )
+      	# 	if campaignee.cast_vote(campaigner)
+      	# 		vote_count[campaigner.name] += 1
+      	# 		campaignee.voted = true
+      	# 	end
+      	# end 
+
+    #   elsif (campaigner.is_a? Politician) && (campaignee.is_a? Politician)
+    #   		if campaigner == campaignee
+    #   			vote_count[campaigner.name] += 1
+    #   			campaignee.voted = true
+    #   		elsif ((campaigner != campaignee) && (campaigner.party == campaignee.party))
       			
-  			puts <<-BRUSHOFF
-  			Howdy there #{campaignee.name}!
-  			You are a fellow member of the #{campaigner.party} party!
-  			Though I largely agree with you on all issues,
-  			I will latch on to a trivial distinction in 
-  			our policy stances to justify opposing and villifying you.
-  			If you should, however, win this election, 
-  			please consider me for an appointment to high office.
+  		# 	puts <<-BRUSHOFF
+  		# 	Howdy there #{campaignee.name}!
+  		# 	You are a fellow member of the #{campaigner.party} party!
+  		# 	Though I largely agree with you on all issues,
+  		# 	I will latch on to a trivial distinction in 
+  		# 	our policy stances to justify opposing and villifying you.
+  		# 	If you should, however, win this election, 
+  		# 	please consider me for an appointment to high office.
 
-  			BRUSHOFF
-   				elsif ((campaigner != campaignee) && (campaigner.party != campaignee.party))
+  		# 	BRUSHOFF
+   	# 			elsif ((campaigner != campaignee) && (campaigner.party != campaignee.party))
 				
-				puts <<-DENNUNCIATION
-  			#{campaigner.name}! You vile #{campaigner.party}!
-  			How can you dream of aspiring to higher office 
-  			in this great land of ours?
-  			You most certainly eat babies and torture puppies!
-  			Fie on you and your political aspirations.
-  			I shall crush you in the present electoral contest!
+				# puts <<-DENNUNCIATION
+  		# 	#{campaigner.name}! You vile #{campaigner.party}!
+  		# 	How can you dream of aspiring to higher office 
+  		# 	in this great land of ours?
+  		# 	You most certainly eat babies and torture puppies!
+  		# 	Fie on you and your political aspirations.
+  		# 	I shall crush you in the present electoral contest!
 
-  			DENNUNCIATION
-      		end #campaigner == campaignee
-      end #(campaigner.is_a? Politician) && ((campaignee.is_a? Voter) && !(campaignee.is_a? Politician))
-    end #(campaigner.is_a? Politician) && ((campaignee.is_a? Voter) && !(campaignee.is_a? Politician))
+  		# 	DENNUNCIATION
+    #   		end #campaigner == campaignee
+    #   end #(campaigner.is_a? Politician) && ((campaignee.is_a? Voter) && !(campaignee.is_a? Politician))
+    #end #(campaigner.is_a? Politician) && ((campaignee.is_a? Voter) && !(campaignee.is_a? Politician))
 
-    puts 
-    p vote_count
+    # puts 
+    # p vote_count
 
   	#at the time of the visit, the visitee casts a vote based 
   	#on the probability that somone with their politics 
@@ -237,6 +251,10 @@ class Simulation
 
 
 end
+
+#so a key attribute of voters is that they vote
+# politicians vote and campaign 
+#
   
 
 class Voter
@@ -260,10 +278,51 @@ class Voter
 		@@voters_created
   end
 
-	
 
+  # need to randomly pick a number not included in the rand
+  def cast_vote(politician)
+  	if ((self.is_a? Voter) && !(self.is_a? Politician))
+  		if politician.party == "Democrat"
+  	    if ((self.politics == "Socialist") && ((1..90).include? rand(100) + 1))
+  	    	return true
+  			end
+  			if ((self.politics == "Liberal") && ((1..75).include? rand(100) + 1))
+  	    	return true
+  			end
+  			if ((self.politics == "Neutral") && ((1..50).include? rand(100) + 1))
+  	    	return true
+  			end
+  			if ((self.politics == "Conservative") && ((1..25).include? rand(100) + 1))
+  	    	return true
+  			end
+  			if ((self.politics == "Tea Party") && ((1..10).include? rand(100)+ 1))
+  	    	return true
+  			end
+  		elsif politician.party == "Republican"
+  			if ((self.politics == "Tea Party") && ((1..90).include? rand(100) + 1))
+  	    	return true
+  			end
+  			if ((self.politics == "Conservative") && ((1..75).include? rand(100) + 1))
+  	    	return true
+  			end
+  			if ((self.politics == "Neutral") && ((1..50).include? rand(100) + 1))
+  	    	return true
+  			end
+  			if ((self.politics == "Liberal") && ((1..25).include? rand(100) + 1))
+  	    	return true
+  			end
+  			if ((self.politics == "Socialist") && ((1..10).include? rand(100)+ 1))
+  	    	return true
+  			end
+  		end     
+  	elsif ((self.is_a? Voter) && (self.is_a? Politician))
+  		if self == politician
+  			return true 
+  		end 
+  	end
+  end	
+end  
 
-end 
 
 
 class Politician < Voter

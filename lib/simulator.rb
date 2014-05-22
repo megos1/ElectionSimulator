@@ -16,7 +16,7 @@ class Simulation
     
     voters = Voter.voters_created
     politicians = voters.select {|voter| voter if voter.is_a? Politician}
-
+    #Create script here to enhance usability - describe how the game works
     puts
     puts "What would you like to do? Create, List, Update, or Vote?"
     prompt 
